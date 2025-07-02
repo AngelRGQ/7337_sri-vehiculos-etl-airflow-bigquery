@@ -1,0 +1,53 @@
+# Configuración del Proyecto ETL SRI Vehículos
+# Copia este archivo como variables.yaml y actualiza con tus valores
+
+# Google Cloud Platform
+project_id: "tu-project-id-aqui"  # Reemplazar con tu Project ID real
+dataset_id: "sri_vehiculos_dw"
+bucket_name: "sri-vehiculos-etl-bucket-tu-nombre-unico"  # Debe ser único globalmente
+location: "US"  # o "EU" según tu preferencia
+
+# Archivos de datos
+source_file: "raw-data/sri_vehiculos.csv"
+temp_folder: "temp/"
+processed_folder: "processed-data/"
+
+# Configuración de BigQuery
+bigquery:
+  write_disposition: "WRITE_TRUNCATE"  # WRITE_TRUNCATE, WRITE_APPEND, WRITE_EMPTY
+  clustering_fields: ["Anio", "Marca"]
+  partitioning_field: "FechaRegistro"
+
+# Configuración de Airflow
+airflow:
+  start_date: "2024-01-01"
+  schedule_interval: "@daily"  # "@daily", "@weekly", "@monthly", None
+  catchup: false
+  max_active_runs: 1
+
+# Configuración de email (opcional)
+email:
+  enabled: false
+  smtp_host: "smtp.gmail.com"
+  smtp_port: 587
+  smtp_user: "tu-email@gmail.com"
+  smtp_password: "tu-app-password"
+  recipients: ["admin@tuempresa.com"]
+
+# Configuración de alertas
+alerts:
+  enabled: true
+  slack_webhook: ""  # URL del webhook de Slack (opcional)
+  teams_webhook: ""  # URL del webhook de Teams (opcional)
+
+# Configuración de validación de datos
+data_quality:
+  enabled: true
+  max_null_percentage: 10  # Máximo porcentaje de nulos permitido
+  min_records_threshold: 1000  # Mínimo número de registros esperados
+  duplicate_check: true
+
+# Configuración de logging
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR
+  file_retention_days: 30
